@@ -1,0 +1,56 @@
+@model BookStoreApp.Models.Project
+
+@{
+    ViewData["Title"] = "Add Project";
+}
+
+<h2>Add Project Details </h2>
+
+<form asp-controller="Project" asp-action="AddProject" method="post">
+    <div class="form-group">
+        <label for="ProjectName">Project Name</label>
+        <input type="text" class="form-control" id="ProjectName" name="ProjectName" required>
+    </div>
+    <div class="form-group">
+        <label for="NumberOfModules">Number Of Modules</label>
+        <input type="text" class="form-control" id="NumberOfModules" name="NumberOfModules" required>
+    </div>
+    <div class="form-group">
+        <label for="SubmissionDate">Submission Date</label>
+         <input type="date" class="form-control" id="SubmissionDate" name="SubmissionDate" required>
+    </div>
+    <div class="form-group">
+    <label for="FreelancerName">Freelancer Name</label>
+    <select class="form-control" id="FreelancerName" name="FreelancerName" required>
+        <option value="">Select Freelancer</option>
+    </select>
+</div>
+    <button type="submit" class="btn btn-primary">Add Project</button>
+</form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Define a function to fetch job titles and populate the dropdown
+        function populateFreelancerNames() {
+            $.ajax({
+                url: 'https://localhost:7266/api/Freelancer/FreelancerNames', // Replace with the actual URL of your Web API endpoint
+                method: 'GET',
+                success: function (data) {
+                    var dropdown = $('#FreelancerName');
+                    dropdown.empty();
+                    dropdown.append($('<option>').val('').text('Select Freelancer'));
+                    $.each(data, function (key, entry) {
+                        dropdown.append($('<option>').val(entry).text(entry));
+                    });
+                },
+                error: function () {
+                    console.error('Error fetching Freelancer Name from the API.');
+                }
+            });
+        }
+
+        // Call the function to populate the dropdown when the page loads
+        populateFreelancerNames();
+    });
+</script>
